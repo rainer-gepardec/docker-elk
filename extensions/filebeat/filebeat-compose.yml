@@ -1,0 +1,21 @@
+version: '3.2'
+
+services:
+  filebeat:
+    build:
+      context: extensions/filebeat/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./extensions/filebeat/config/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+        read_only: true
+      - type: bind
+        source: ./extensions/filebeat/log
+        target: /usr/share/log
+        read_only: true
+    networks:
+      - elk
+    depends_on: 
+      - elasticsearch
